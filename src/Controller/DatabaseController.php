@@ -39,7 +39,7 @@ class DatabaseController extends AbstractController
             'user' => $username,
             'password' => $password,
             'host' => $host,
-            'driver' => 'sqlsrv',
+            'driver' => 'pdo_sqlsrv',
             'port' => $port,
         ];
 
