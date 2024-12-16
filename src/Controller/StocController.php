@@ -2,22 +2,20 @@
 
 namespace App\Controller;
 
-use App\Entity\Management;
-use App\Entity\Product;
-use App\Entity\Stock;
+use App\Entity\Gestiune;
+use App\Entity\Produs;
+use App\Entity\Stoc;
 use App\Service\DatabaseConnectionService;
-use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class StockController extends AbstractController
+class StocController extends AbstractController
 {
     public function __construct(
         private SerializerInterface $serializerInterface,
@@ -39,7 +37,7 @@ class StockController extends AbstractController
 
         $em = $this->dbService->getEntityManagerForDb($dbName, entityPaths: [__DIR__ . '/../Entity']);
         
-        $dql = 'SELECT p FROM App\Entity\Product p WHERE p.barCode = :value';
+        $dql = 'SELECT p FROM App\Entity\Produs p WHERE p.barCode = :value';
         $query = $em->createQuery($dql);
         $query->setParameter('value', $data['input']);
 
@@ -49,15 +47,19 @@ class StockController extends AbstractController
             throw new HttpException(404, "Product not found.");
         }
 
-        $stock = $results[0]->getStock();
+        $dql = 'SELECT s FROM App\Entity\Stoc s WHERE s.produs = :value';
+        $query = $em->createQuery($dql);
+        $query->setParameter('value', $results[0]->getId());
+
+        $stoc = $query->getResult();
 
         // Serializăm și returnăm rezultatul
-        $data = $this->serializerInterface->serialize($stock, 'json',  ['groups' => 'stock']);
+        $data = $this->serializerInterface->serialize($stoc[0], 'json',  ['groups' => 'stock']);
         return new JsonResponse($data, 200, [], true);
     }
 
     #[Route('/api/stock/product/name', name: 'app_get_name_stock', methods: ['POST'])]
-    public function getStockByName(Request $request): JsonResponse
+    public function getStocByName(Request $request): JsonResponse
     {
         // Obținem baza de date specificată din body-ul request-ului
         $data = json_decode($request->getContent(), true);
@@ -69,7 +71,7 @@ class StockController extends AbstractController
 
         $em = $this->dbService->getEntityManagerForDb($dbName, entityPaths: [__DIR__ . '/../Entity']);
 
-        $dql = 'SELECT p FROM App\Entity\Product p WHERE p.name = :value';
+        $dql = 'SELECT p FROM App\Entity\Produs p WHERE p.name = :value';
         $query = $em->createQuery($dql);
         $query->setParameter('value', $data['input']);
 
@@ -79,10 +81,14 @@ class StockController extends AbstractController
             throw new HttpException(404, "Product not found.");
         }
 
-        $stock = $results[0]->getStock();
+        $dql = 'SELECT s FROM App\Entity\Stoc s WHERE s.produs = :value';
+        $query = $em->createQuery($dql);
+        $query->setParameter('value', $results[0]->getId());
+
+        $stoc = $query->getResult();
 
         // Serializăm și returnăm rezultatul
-        $data = $this->serializerInterface->serialize($stock, 'json',  ['groups' => 'stock']);
+        $data = $this->serializerInterface->serialize($stoc[0], 'json',  ['groups' => 'stock']);
         return new JsonResponse($data, 200, [], true);
     }
 
@@ -108,13 +114,31 @@ class StockController extends AbstractController
 
         $em = $this->dbService->getEntityManagerForDb($dbName, entityPaths: [__DIR__ . '/../Entity']);
 
-        $stock = $em->find(Stock::class, $id);
+        $stock = $em->find(Stoc::class, $id);
 
-        $stock->setChangedProductCount($data['changedProductCount']);
+        $stock->setInitialProductCount($data['changedProductCount']);
+
+        $stock->setChangedProductCount(0);
 
         $em->flush();
 
         return new JsonResponse("", 200, []);
+    }
+
+    #[Route('api/produs', methods: ['GET'])]
+    public function getProdus()
+    {
+        $dbname = 'Restaurant_gest';
+
+        $em = $this->dbService->getEntityManagerForDb($dbname, entityPaths: [__DIR__ . '/../Entity']);
+
+        $dql = 'SELECT s FROM App\Entity\Stoc s WHERE s.produs = :value';
+        $query = $em->createQuery($dql);
+        $query->setParameter('value', 16);
+
+        $result = $query->getResult();
+
+        dd($result);
     }
 
     // #[Route('/api/stock/initial-product-count/{id}', name: 'app_edit_initial_product_count_stock', methods: ['PUT'])]

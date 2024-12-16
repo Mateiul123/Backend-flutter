@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Gestiune;
 use App\Entity\Management;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -9,7 +10,7 @@ use Doctrine\ORM\EntityRepository;
 /**
  * Repository custom pentru Management.
  */
-class ManagementRepository
+class GestiuneRepository
 {
     private EntityManagerInterface $entityManager;
     private EntityRepository $repository;
@@ -18,13 +19,13 @@ class ManagementRepository
     {
         $this->entityManager = $entityManager;
         // Obține repository-ul generic pentru Management
-        $this->repository = $this->entityManager->getRepository(Management::class);
+        $this->repository = $this->entityManager->getRepository(Gestiune::class);
     }
 
     /**
      * Găsește o entitate Management după ID.
      */
-    public function find($id): ?Management
+    public function find($id): ?Gestiune
     {
         return $this->repository->find($id);
     }
@@ -48,7 +49,7 @@ class ManagementRepository
     /**
      * Găsește o singură entitate Management pe baza criteriilor.
      */
-    public function findOneBy(array $criteria): ?Management
+    public function findOneBy(array $criteria): ?Gestiune
     {
         return $this->repository->findOneBy($criteria);
     }
@@ -56,7 +57,7 @@ class ManagementRepository
     /**
      * Salvează o entitate Management.
      */
-    public function save(Management $management): void
+    public function save(Gestiune $management): void
     {
         $this->entityManager->persist($management);
         $this->entityManager->flush();
@@ -65,7 +66,7 @@ class ManagementRepository
     /**
      * Șterge o entitate Management.
      */
-    public function delete(Management $management): void
+    public function delete(Gestiune $management): void
     {
         $this->entityManager->remove($management);
         $this->entityManager->flush();

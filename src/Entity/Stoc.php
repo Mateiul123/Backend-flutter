@@ -2,14 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\StockRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Repository\StocRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: StockRepository::class)]
-class Stock
+#[ORM\Entity(repositoryClass: StocRepository::class)]
+class Stoc
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,38 +16,40 @@ class Stock
     private ?int $id = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(name: "id_gestiune", referencedColumnName: "id", nullable: false)]
     #[Groups(['stock'])]
-    private ?Management $management = null;
+    private ?Gestiune $gestiune = null;
 
-    #[ORM\Column(name: "initial_product_count")]
+    #[ORM\Column(name: "cantitate")]
     #[Groups(['stock'])]
     private ?int $initialProductCount = null;
 
-    #[ORM\Column(name: "changed_product_count")]
+    #[ORM\Column(name: "stoc_initial")]
     #[Groups(['stock'])]
     private ?int $changedProductCount = null;
 
-    #[ORM\Column(name: "stock_price")]
+    #[ORM\Column(name: "pu")]
     #[Groups(['stock'])]
     private ?int $stockPrice = null;
 
-    #[ORM\OneToOne(inversedBy: 'stock', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'stoc', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(name: "id_produs", referencedColumnName: "id", nullable: false)]
     #[Groups(['stock'])]
-    private ?Product $product = null;
+    private ?Produs $produs = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getManagement(): ?Management
+    public function getGestiune(): ?Gestiune
     {
-        return $this->management;
+        return $this->gestiune;
     }
 
-    public function setManagement(?Management $management): static
+    public function setGestiune(?Gestiune $gestiune): static
     {
-        $this->management = $management;
+        $this->gestiune = $gestiune;
 
         return $this;
     }
@@ -90,14 +90,14 @@ class Stock
         return $this;
     }
 
-    public function getProduct(): ?product
+    public function getProdus(): ?Produs
     {
-        return $this->product;
+        return $this->produs;
     }
 
-    public function setProduct(?product $product): static
+    public function setProdus(?Produs $produs): static
     {
-        $this->product = $product;
+        $this->produs = $produs;
 
         return $this;
     }

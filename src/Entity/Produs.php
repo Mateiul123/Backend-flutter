@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\ProductRepository;
+use App\Repository\ProdusRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: ProductRepository::class)]
-class Product
+#[ORM\Entity(repositoryClass: ProdusRepository::class)]
+class Produs
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -24,8 +24,8 @@ class Product
     #[ORM\Column(name: "cod_de_bare", length: 255)]
     private ?string $barCode = null;
 
-    #[ORM\OneToOne(mappedBy: 'product', cascade: ['persist', 'remove'])]
-    private ?Stock $stock = null;
+    #[ORM\OneToOne(mappedBy: 'produs', cascade: ['persist', 'remove'])]
+    private ?Stoc $stoc = null;
 
     public function getId(): ?int
     {
@@ -68,24 +68,24 @@ class Product
         return $this;
     }
 
-    public function getStock(): ?Stock
+    public function getStoc(): ?Stoc
     {
-        return $this->stock;
+        return $this->stoc;
     }
 
-    public function setStock(?Stock $stock): static
+    public function setStoc(?Stoc $stoc): static
     {
         // unset the owning side of the relation if necessary
-        if ($stock === null && $this->stock !== null) {
-            $this->stock->setProduct(null);
+        if ($stoc === null && $this->stoc !== null) {
+            $this->stoc->setProdus(null);
         }
 
         // set the owning side of the relation if necessary
-        if ($stock !== null && $stock->getProduct() !== $this) {
-            $stock->setProduct($this);
+        if ($stoc !== null && $stoc->getProdus() !== $this) {
+            $stoc->setProdus($this);
         }
 
-        $this->stock = $stock;
+        $this->stoc = $stoc;
 
         return $this;
     }

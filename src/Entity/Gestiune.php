@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\ManagementRepository;
+use App\Repository\GestiuneRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: ManagementRepository::class)]
-class Management
+#[ORM\Entity(repositoryClass: GestiuneRepository::class)]
+class Gestiune
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
