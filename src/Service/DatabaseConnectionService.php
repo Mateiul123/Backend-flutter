@@ -35,13 +35,25 @@ class DatabaseConnectionService
             // Dacă nu există, creează-o și o returnează
             $item->expiresAfter(null);
 
-            $connection = DriverManager::getConnection($connectionParams);
-            $connection->connect();
+            $connection = $this->cache->get($cacheKey, function (ItemInterface $item) use ($connectionParams) {
+                // Setăm timpul de expirare al cache-ului
+                $item->expiresAfter(null);
+            
+                try {
+                    $connection = DriverManager::getConnection($connectionParams);
+                    $connection->connect();
+            
+                    // Dacă conexiunea este reușită, returnăm parametrii
+                    return $connection->getParams();
+                } catch (\Exception $e) {
+                    // Aruncăm o excepție cu un mesaj de eroare personalizat
+                    throw new \RuntimeException("Eroare: Nu s-a putut realiza conexiunea la baza de date. " . $e->getMessage());
+                }
+            });
 
             return $connection->getParams();
         });
 
-        dd($connection);
     }
 
     /**
