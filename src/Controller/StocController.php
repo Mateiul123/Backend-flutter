@@ -43,7 +43,7 @@ class StocController extends AbstractController
 
         $results = $query->getResult();
 
-        if (!$results[0]) {
+        if (!$results) {
             throw new HttpException(404, "Product not found.");
         }
 
@@ -52,6 +52,10 @@ class StocController extends AbstractController
         $query->setParameter('value', $results[0]->getId());
 
         $stoc = $query->getResult();
+        
+        if (!$stoc) {
+            throw new HttpException(404, "Stoc not found.");
+        }
 
         // Serializăm și returnăm rezultatul
         $data = $this->serializerInterface->serialize($stoc[0], 'json',  ['groups' => 'stock']);
@@ -77,7 +81,7 @@ class StocController extends AbstractController
 
         $results = $query->getResult();
 
-        if (!$results[0]) {
+        if (!$results) {
             throw new HttpException(404, "Product not found.");
         }
 
@@ -86,6 +90,10 @@ class StocController extends AbstractController
         $query->setParameter('value', $results[0]->getId());
 
         $stoc = $query->getResult();
+
+        if (!$stoc) {
+            throw new HttpException(404, "Stoc not found.");
+        }
 
         // Serializăm și returnăm rezultatul
         $data = $this->serializerInterface->serialize($stoc[0], 'json',  ['groups' => 'stock']);

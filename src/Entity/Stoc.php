@@ -21,11 +21,11 @@ class Stoc
     private ?Gestiune $gestiune = null;
 
     #[ORM\Column(name: "cantitate")]
-    #[Groups(['stock'])]
+    #[Groups(['stock', 'linie_document'])]
     private ?int $initialProductCount = null;
 
     #[ORM\Column(name: "stoc_initial")]
-    #[Groups(['stock'])]
+    #[Groups(['stock', 'linie_document'])]
     private ?int $changedProductCount = null;
 
     #[ORM\Column(name: "pu")]

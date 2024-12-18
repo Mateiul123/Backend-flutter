@@ -43,7 +43,7 @@ class DatabaseConnectionService
                     return $connection->getParams();
                 } catch (\Exception $e) {
                     // Aruncăm o excepție cu un mesaj de eroare personalizat
-                    throw new \RuntimeException("Eroare: Nu s-a putut realiza conexiunea la baza de date. " . $e->getMessage());
+                    throw new \RuntimeException("Eroare: Nu s-a putut realiza conexiunea la baza de date. " . $connectionParams);
                 }
         });
 

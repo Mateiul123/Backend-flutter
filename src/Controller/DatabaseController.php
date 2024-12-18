@@ -30,7 +30,7 @@ class DatabaseController extends AbstractController
 
         $host = $data['host'] ?? '';
         $port = $data['port'] ?? '3306';
-        $dbname = $data['db_name'] ?? '';
+        $dbname = $data['dbname'] ?? '';
         $username = $data['username'] ?? '';
         $password = $data['password'] ?? '';
 
