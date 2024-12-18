@@ -17,6 +17,7 @@ class LinieDocument
 
     #[ORM\OneToOne(inversedBy: 'linieDocument', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(name: "id_produs", referencedColumnName: "id", nullable: false)]
+    #[Groups(['linie_document'])]
     private ?Produs $produs = null;
 
     #[ORM\ManyToOne(inversedBy: 'linieDocuments')]
