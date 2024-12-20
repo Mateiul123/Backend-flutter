@@ -91,14 +91,19 @@ class Stoc
     }
 
     public function getProdus(): ?Produs
-    {
-        return $this->produs;
+{
+    return $this->produs;
+}
+
+public function setProdus(?Produs $produs): static
+{
+    // Asigură-te că relația este setată corect pe ambele părți
+    if ($produs !== null && $produs->getStoc() !== $this) {
+        $produs->setStoc($this);
     }
 
-    public function setProdus(?Produs $produs): static
-    {
-        $this->produs = $produs;
+    $this->produs = $produs;
 
-        return $this;
-    }
+    return $this;
+}
 }

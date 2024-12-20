@@ -6,6 +6,7 @@ use App\Repository\UnitateMRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UnitateMRepository::class)]
 class UnitateM
@@ -13,6 +14,7 @@ class UnitateM
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(groups: ['stock'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]

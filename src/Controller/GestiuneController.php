@@ -16,7 +16,7 @@ class GestiuneController extends AbstractController
     public function __construct(private DatabaseConnectionService $dbService,
                                 private SerializerInterface $serializerInterface) {}
 
-    #[Route('/api/gestiune', name: 'app_gestiune', methods: ['GET'])]
+    #[Route('/api/gestiune', name: 'app_gestiune', methods: ['POST'])]
     public function index(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -27,10 +27,9 @@ class GestiuneController extends AbstractController
         }
 
         $em = $this->dbService->getEntityManagerForDb($dbName, entityPaths: [__DIR__ . '/../Entity']);
-
-        $dql = 'SELECT g FROM App\Entity\Gestiune';
+        $dql = 'SELECT g FROM App\Entity\Gestiune g';
         $query = $em->createQuery($dql);
-
+        
         $gestiuni = $query->getResult();
 
         if(!$gestiuni) {

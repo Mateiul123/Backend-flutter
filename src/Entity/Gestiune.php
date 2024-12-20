@@ -18,7 +18,7 @@ class Gestiune
     private ?int $id = null;
 
     #[ORM\Column(name: 'denumire', length: 255)]
-    #[Groups(['stock'. 'gestiune'])]
+    #[Groups(['stock', 'gestiune'])]
     private ?string $name = null;
 
     /**

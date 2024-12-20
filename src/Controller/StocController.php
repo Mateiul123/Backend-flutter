@@ -146,7 +146,7 @@ class StocController extends AbstractController
 
         $result = $query->getResult();
 
-        dd($result);
+        dd($result[0]->getProdus()->getBarCode());
     }
 
     // #[Route('/api/stock/initial-product-count/{id}', name: 'app_edit_initial_product_count_stock', methods: ['PUT'])]

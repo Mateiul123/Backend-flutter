@@ -12,10 +12,11 @@ class Produs
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(groups: ['stock'])]
     private ?int $id = null;
 
     #[ORM\Column(name: 'denumire', length: 255, nullable: false)]
-    #[Groups(['stock', 'linie_document'])]
+    #[Groups(groups: ['stock', 'linie_document'])]
     private ?string $name = null;
 
     #[ORM\Column(name: 'pret_vanzare')]
@@ -27,13 +28,14 @@ class Produs
     #[ORM\OneToOne(mappedBy: 'produs', cascade: ['persist', 'remove'])]
     private ?Stoc $stoc = null;
 
-    #[ORM\OneToOne(mappedBy: 'produs', cascade: ['persist', 'remove'])]
-    private ?LinieDocument $linieDocument = null;
-
     #[ORM\ManyToOne(inversedBy: 'produses')]
+    #[ORM\JoinColumn(name: "id_um", referencedColumnName: "id", nullable: false)]
+    #[Groups(groups: ['stock'])]
     private ?UnitateM $um = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(name: "id_tva", referencedColumnName: "id", nullable: false)]
+    #[Groups(groups: ['stock'])]
     private ?Tva $tva = null;
 
     public function getId(): ?int
@@ -95,28 +97,6 @@ class Produs
         }
 
         $this->stoc = $stoc;
-
-        return $this;
-    }
-
-    public function getLinieDocument(): ?LinieDocument
-    {
-        return $this->linieDocument;
-    }
-
-    public function setLinieDocument(?LinieDocument $linieDocument): static
-    {
-        // unset the owning side of the relation if necessary
-        if ($linieDocument === null && $this->linieDocument !== null) {
-            $this->linieDocument->setProdus(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($linieDocument !== null && $linieDocument->getProdus() !== $this) {
-            $linieDocument->setProdus($this);
-        }
-
-        $this->linieDocument = $linieDocument;
 
         return $this;
     }

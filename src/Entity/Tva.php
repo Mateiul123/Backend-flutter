@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\TvaRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: TvaRepository::class)]
 class Tva
@@ -11,6 +12,7 @@ class Tva
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(groups: ['stock'])]
     private ?int $id = null;
 
     #[ORM\Column(nullable: true)]

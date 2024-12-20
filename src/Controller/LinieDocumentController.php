@@ -65,7 +65,13 @@ class LinieDocumentController extends AbstractController
 
         $document = $em->find(Document::class, $data['document']);
         $gestiune = $em->find(Gestiune::class, $data['gestiune']);
-        $produs = $em->find(Produs::class, $data['produs']); 
+        $produs = $em->find(Produs::class, $data['produs']);
+        
+        $dql = 'SELECT s FROM App\Entity\Stoc s WHERE s.produs = :value';
+        $query = $em->createQuery($dql);
+        $query->setParameter('value', $produs);
+
+        $stoc = $query->getResult();
 
         $linieDocument = new LinieDocument();
 
@@ -75,9 +81,9 @@ class LinieDocumentController extends AbstractController
         $linieDocument->setGestiune($gestiune);
         $linieDocument->setPretVanzareCurent($produs->getPrice());
         $linieDocument->setProdus($produs);
-        $linieDocument->setPu($produs->getStoc()->getStockPrice());
-        $linieDocument->setPuAprox($produs->getStoc()->getStockPrice());
-        $linieDocument->setPuStoc($produs->getStoc()->getStockPrice());
+        $linieDocument->setPu($data['pu']);
+        $linieDocument->setPuAprox($data['pu']);
+        $linieDocument->setPuStoc($data['pu']);
         $linieDocument->setTvaCumparare($produs->getTva()->getId());
         $linieDocument->setUm($produs->getUm()->getId());
         $linieDocument->setValoare($data['cantitate'] * $linieDocument->getPu());

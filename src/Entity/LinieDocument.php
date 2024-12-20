@@ -15,7 +15,7 @@ class LinieDocument
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(inversedBy: 'linieDocument', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'null', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(name: "id_produs", referencedColumnName: "id", nullable: false)]
     #[Groups(['linie_document'])]
     private ?Produs $produs = null;
@@ -55,7 +55,7 @@ class LinieDocument
     private ?int $pretVanzareCurent = null;
 
     #[ORM\ManyToOne(inversedBy: 'linieDocuments')]
-    #[ORM\JoinColumn(name: "id_document", referencedColumnName: "id", nullable: false)]
+    #[ORM\JoinColumn(name: "id_document", referencedColumnName: "id", nullable: true)]
     private ?Document $document = null;
 
     #[ORM\Column(nullable: true)]
